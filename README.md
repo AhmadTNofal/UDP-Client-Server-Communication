@@ -1,93 +1,168 @@
-# IOT Worksheet2
+# Task 1: UDP Client-Server Communication
+
+## Introduction
+- Understand the basics of UDP communication.
+- Implement a UDP client to send a message to a server.
+- Develop a UDP server to receive messages from clients.
+- Utilize packet streams for communication between client and server.
+- Verify successful communication between client and server.
+
+## Prerequisites
+- Basic knowledge of C++ programming.
+- Understanding of socket programming concepts.
+- Familiarity with Linux environment and command-line interface.
+- Understanding socket.hpp UWE provided library 
+
+## Tools and Libraries:
+- C++ compiler (e.g., g++)
+- iot library provided in /opt/iot
+- Utility scripts: create_packetfile, packets_clear, iotdump
+
+## Task Overview:
+1. Client Implementation: Write a C++ program to create a UDP client that sends a message to a server. Set up the client's IP address, specify the server's address, create a UDP socket, bind it to the client's address, and send the message.
+
+2. Server Implementation: Develop a separate C++ program for the UDP server. Use the recvfrom function to receive messages from clients. Print the received message along with the client's IP address.
+
+3. Makefile Creation: Construct a Makefile to compile the client and server programs into executable binaries. Include necessary flags for compiling C++ source files and linking the iot library.
+
+4. Packet Stream Management: Before running the client and server, create packet streams for communication using the provided utility script create_packetfile. Clear any existing packet streams with packets_clear.
+
+5. Execution and Verification: Run the client and server executables. Verify successful communication by checking the contents of the packet streams using iotdump.
+
+6. Through this task, you will gain practical experience in implementing UDP client-server communication and understand the essential steps involved in setting up and managing UDP sockets. Additionally, you will learn how to use packet streams for data transmission between client and server processes.
+
+## Instructions
+- git clone the repo:
+
+    ~~~bash
+        git clone https://gitlab.uwe.ac.uk/a5-hasan/iot-worksheet2.git
+
+        cd iot-worksheet2
+
+        cd Task1
+    ~~~
+
+- Make all files:
+
+    ~~~bash
+    make all
+    ~~~
+
+<br>
+
+- Clear the Packets:
+
+    ~~~bash
+    /opt/iot/bin/packets_clear
+    ~~~
+
+<br>
+
+- Build the Client app:
+
+    ~~~bash
+    ./build/client_app
+    ~~~
+
+<br>
+
+- Build the Server app:
+
+    ~~~bash
+    ./build/server_app
+    ~~~
+
+<br>
+
+- Output Verification:
+    ![Output](Images/image.png)
+
+
+### Client
+1. Set the client IP address.
+2. Create the server's address structure.
+3. Create the UDP socket.
+4. Bind the socket to the client's address.
+5. Send the message to the server.
+6. Prepare packet streams using `create_packetfile`.
+7. Run the client executable.
+
+### Server
+1. Implement server-side code using `recvfrom`.
+2. Update the Makefile to compile the server code.
+3. Clear existing packet streams using `packets_clear`.
+4. Run the server executable.
+
+## Verification
+
+1. Compile the Programs: Ensure that both the UDP client and server programs are compiled into executable binaries using the provided Makefile or by manually compiling the source files.
+
+2. Clear Packet Streams: Before running the client and server, clear any existing packet streams using the packets_clear utility script. This ensures a clean environment for communication.
+
+3. Run the Client: Launch the client program to send a message to the server. Ensure that the client specifies the correct server IP address and port number.
+
+4. Run the Server: Execute the server program to start listening for incoming UDP packets. The server should be ready to receive messages from the client.
+
+5. Verify Output: After the client sends the message, check the output of the server program. It should display the received message along with the IP address of the client from which the message originated.
+
+6. Repeat as Necessary: Repeat the process as needed to test different message exchanges between the client and server. Ensure that the communication is consistent and reliable under various scenarios.
+
+## How The Output is Produced
+~~~c++
+    while (true) {
+        sockaddr_in client_addr;
+        size_t client_addr_len = sizeof(client_addr);
+
+        // Receive a message from a client
+        ssize_t msg_len = sock.recvfrom(buffer, sizeof(buffer) - 1, 0,(struct sockaddr*)&client_addr, (size_t*)&client_addr_len);
+
+        if (msg_len < 0) {
+            std::cerr << "Error receiving message" << std::endl;
+            continue;
+        }
+
+        // Null-terminate the received message
+        buffer[msg_len] = '\0';
+
+        // Print the received message and sender's address
+        std::cout << "Received message: " << buffer << " from " << inet_ntoa(client_addr.sin_addr) << ":" << ntohs(client_addr.sin_port) << std::endl;
+    }
+~~~
+1. Infinite Loop: The while (true) loop ensures that the server keeps running indefinitely, continuously listening for incoming messages from clients.
+
+2. Client Address Structure: A sockaddr_in struct named client_addr is declared. This struct will hold the address information of the client from which the server receives messages.
+
+3. Address Length: The client_addr_len variable is used to store the size of the client_addr struct. This size is needed as an argument for the recvfrom function to determine the actual size of the client's address structure.
+
+4. Receiving Messages: The recvfrom function is called within the loop to receive messages from clients. It takes several arguments:
+
+    - `buffer:` A buffer to store the received message.
+    
+    - `sizeof(buffer) - 1:` The maximum length of the message that can be received, ensuring space for a null terminator.
+
+    - `0:` Flags, which are set to 0 for normal operation.
+
+    - `(struct sockaddr*)&client_addr:` A pointer to the client's address structure.
+
+    - `(size_t*)&client_addr_len:` A pointer to the size of the client's address structure.
+    
+5. Error Handling: If the recvfrom function returns a value less than 0, it indicates an error occurred while receiving the message. In such cases, an error message is printed, and the loop continues to listen for more messages.
+
+6. Null-Terminating the Message: After receiving the message, the server null-terminates it by adding a null character ('\0') at the end of the buffer. This ensures that the received message is treated as a C-style string.
+
+7. Printing Received Message: Finally, the server prints the received message along with the IP address and port number of the client from which the message originated. The inet_ntoa function converts the binary representation of the client's IP address to a human-readable string, while ntohs converts the port number from network byte order to host byte order.
+
+## Conclusion
+
+In conclusion, we have successfully completed Task 1 of the IoT worksheet, which involved setting up communication between a UDP client and server using the provided library and utilities. Here's a summary of the key points:
+
+- Client Implementation: We implemented a UDP client in C++ that sends a message to a specified server IP address and port number. The client code utilized the provided IoT library for socket communication.
+
+- Server Implementation: Additionally, we developed a UDP server in C++ that listens for incoming messages from clients. The server code also relied on the IoT library for socket operations.
+
+- Packet Streams: To establish communication channels between the client and server, we used the provided create_packetfile utility script to create packet streams for the respective IP addresses and port numbers. This ensured proper communication between the processes.
+
+- Verification Process: We outlined a verification process to ensure that the client and server communicate effectively. This involved compiling the programs, clearing existing packet streams, running the server, running the client, and verifying the output.
 
 
 
-## Getting started
-
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://gitlab.uwe.ac.uk/a5-hasan/iot-worksheet2.git
-git branch -M main
-git push -uf origin main
-```
-
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://gitlab.uwe.ac.uk/a5-hasan/iot-worksheet2/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
