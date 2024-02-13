@@ -74,7 +74,7 @@
 
 <br>
 
-- Output Verification:
+- Output Verification: <br>
     ![Output](Images/image.png)
 
 
@@ -137,7 +137,7 @@
 4. Receiving Messages: The recvfrom function is called within the loop to receive messages from clients. It takes several arguments:
 
     - `buffer:` A buffer to store the received message.
-    
+
     - `sizeof(buffer) - 1:` The maximum length of the message that can be received, ensuring space for a null terminator.
 
     - `0:` Flags, which are set to 0 for normal operation.
