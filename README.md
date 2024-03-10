@@ -152,17 +152,66 @@
 
 7. Printing Received Message: Finally, the server prints the received message along with the IP address and port number of the client from which the message originated. The inet_ntoa function converts the binary representation of the client's IP address to a human-readable string, while ntohs converts the port number from network byte order to host byte order.
 
-## Conclusion
+# Task 2: UDP Client-Server Communication and Echoing Back
 
-In conclusion, we have successfully completed Task 1 of the IoT worksheet, which involved setting up communication between a UDP client and server using the provided library and utilities. Here's a summary of the key points:
+## Instructions
+- git clone the repo:
 
-- Client Implementation: We implemented a UDP client in C++ that sends a message to a specified server IP address and port number. The client code utilized the provided IoT library for socket communication.
+    ~~~bash
+        cd Task2
+    ~~~
 
-- Server Implementation: Additionally, we developed a UDP server in C++ that listens for incoming messages from clients. The server code also relied on the IoT library for socket operations.
+- Make all files:
 
-- Packet Streams: To establish communication channels between the client and server, we used the provided create_packetfile utility script to create packet streams for the respective IP addresses and port numbers. This ensured proper communication between the processes.
+    ~~~bash
+        make all
+    ~~~
 
-- Verification Process: We outlined a verification process to ensure that the client and server communicate effectively. This involved compiling the programs, clearing existing packet streams, running the server, running the client, and verifying the output.
+<br>
+
+- Clear the Packets:
+
+    ~~~bash
+        /opt/iot/bin/packets_clear
+    ~~~
+
+<br>
+
+- Build the Server app:
+
+    ~~~bash
+    ./build/client_app
+    ~~~
+
+<br>
+
+- Build the Client app:
+
+    ~~~bash
+    ./build/client_app
+    ~~~
+
+<br>
+
+## Echoing back the message through the Client
+- Receiving The Message:
+    ![alt text](Images/image1.png)
+
+- The Echo Back:
+    ![alt text](Images/image2.png)
+
+
+# Conclusion
+
+In conclusion, I have successfully completed Task 1 of the IoT worksheet, which involved setting up communication between a UDP client and server using the provided library and utilities. Here's a summary of the key points:
+
+- Client Implementation: I implemented a UDP client in C++ that sends a message to a specified server IP address and port number. The client code utilized the provided IoT library for socket communication.
+
+- Server Implementation: Additionally, I developed a UDP server in C++ that listens for incoming messages from clients. The server code also relied on the IoT library for socket operations.
+
+- Packet Streams: To establish communication channels between the client and server, I used the provided create_packetfile utility script to create packet streams for the respective IP addresses and port numbers. This ensured proper communication between the processes.
+
+- Verification Process: I outlined a verification process to ensure that the client and server communicate effectively. This involved compiling the programs, clearing existing packet streams, running the server, running the client, and verifying the output.
 
 
 
