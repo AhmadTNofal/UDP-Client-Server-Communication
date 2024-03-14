@@ -180,7 +180,7 @@
 - Build the Server app:
 
     ~~~bash
-    ./build/client_app
+    ./build/server_app
     ~~~
 
 <br>

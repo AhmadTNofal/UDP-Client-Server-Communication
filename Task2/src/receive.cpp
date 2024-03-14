@@ -5,7 +5,7 @@
 #include <iot/socket.hpp>
 
 int main() {
-    const char* server_ip = "192.168.1.9"; // Server's IP address
+    const char* server_ip = "192.168.1.11"; // Server's IP address
     const int server_port = 8877; // Server's port
     char buffer[1024]; // Buffer to store incoming messages
 
