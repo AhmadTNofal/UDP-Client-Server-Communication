@@ -35,7 +35,7 @@
 - git clone the repo:
 
     ~~~bash
-        git clone https://gitlab.uwe.ac.uk/a5-hasan/iot-worksheet2.git
+        https://github.com/AhmadTNofal/UDP-Client-Server-Communication.git
 
         cd iot-worksheet2
 
